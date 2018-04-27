@@ -4,8 +4,10 @@ import React, { Component } from 'react';
 // Auth
 import Firebase from '../Firebase/Auth.js';
 
-// Components
-import MyLinks from './MyLinks';
+// Styles
+import '../Styles/AddLink.css';
+import '../Styles/MyLinks.css';
+
 
 // UI
 import RaisedButton from 'material-ui/RaisedButton';
@@ -14,7 +16,7 @@ import DatePicker from 'material-ui/DatePicker';
 
 const Preview = (props) => {
     return (
-        <div>
+        <div className="preview">
             <h3>Link preview</h3>
             <div className="my-link">
                 <div className="link">
@@ -40,11 +42,6 @@ export default class AddEditLink extends Component {
             }
         };
     }
-    showAddItemForm() {
-        this.setState({
-            showModal: !this.state.showModal
-        });
-    }
     addLink(e) {
         e.preventDefault();
 
@@ -59,12 +56,16 @@ export default class AddEditLink extends Component {
             endDate: endDate,
             link: link,
             linkText: linkText,
-            subtitle: subtitle
+            subtitle: subtitle,
+            active: true,
+            deleted: false
         }
 
         const itemsRef = Firebase.database().ref( 'users/' + this.state.userInfo.id + '/links/' );
 
         itemsRef.push(newItem);
+
+        this.props.toggleAddLink();
     }
     updatePreview() {
         this.setState({
@@ -76,48 +77,43 @@ export default class AddEditLink extends Component {
     }
     render() {
         return (
-            <div>
-                <RaisedButton onClick={ () => this.showAddItemForm() } label="Add Link" />
-                <RaisedButton className="logout-button" label="Log out" onClick={ () => { this.props.logout() } } />
-                <div onClick={ () => { this.props.togglePreferences() } } className="avatar" style={ { backgroundImage: 'url(' + this.state.userInfo.picture + ')' } }></div>
-                {
-                    this.state.showModal &&
-                    <div className="add-new-item">
-                        <form onSubmit={ (e) => { this.addLink(e) } } onChange={ (e) => { this.updatePreview(e) } }>
-                            <div className="form-element">
-                                <label>Start Date</label>
-                                <DatePicker id="startDate" hintText="optional" />
-                            </div>
+            <div className="add-new-item panel">
+                <form className="form" onSubmit={ (e) => { this.addLink(e) } } onChange={ (e) => { this.updatePreview(e) } }>
+                    <h2>Add new link.</h2>
+                    <DatePicker
+                        id="startDate"
+                        hintText="optional"
+                        autoOk={ true }
+                        floatingLabelText="Start Date"
+                    />
+                    <DatePicker
+                        id="endDate"
+                        hintText="optional"
+                        autoOk={ true }
+                        floatingLabelText="End Date"
+                    />
+                    <TextField
+                        floatingLabelText="URL"
+                        required
+                        id="link"
+                    />
+                    <TextField
+                        floatingLabelText="Link"
+                        required
+                        id="linkText"
+                    />
 
-                            <div className="form-element">
-                                <label>End Date</label>
-                                <DatePicker id="endDate" hintText="optional" />
-                            </div>
-
-                            <div className="form-element">
-                                <label>Link</label>
-                                <TextField required id="link" />
-                            </div>
-
-                            <div className="form-element">
-                                <label>Link text</label>
-                                <TextField required id="linkText" />
-                            </div>
-
-                            <div className="form-element">
-                                <label>Subtitle</label>
-                                <TextField id="subtitle" hintText="optional" />
-                            </div>
-
-                            <div className="action-button">
-                                <RaisedButton type="submit" label="Add Link" />
-                            </div>
-                        </form>
-                        <Preview preview={this.state.preview} />
+                    <TextField
+                        floatingLabelText="Subtitle"
+                        id="subtitle"
+                        hintText="optional"
+                    />
+                    <div className="action-section">
+                        <RaisedButton style={ { marginRight: '1rem' } } type="button" onClick={ () => { this.props.toggleAddLink(); } } label="Cancel" />
+                        <RaisedButton type="submit" primary={true} label="Add Link" />
                     </div>
-                }
-                <h3>Current Links</h3>
-                <MyLinks userId={this.state.userInfo && this.state.userInfo.id} />
+                </form>
+                <Preview preview={this.state.preview} />
             </div>
         )
     }

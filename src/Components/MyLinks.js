@@ -10,14 +10,14 @@ const trackAndNav = (link, linkId, userId) => {
             click: new Date().toString()
         }
     );
-    // document.location.href = link;
+    document.location.href = link;
 }
 
 const Links = (props) => {
     return (
         (props.links && props.links.length > 0) && props.links.map((link, i) => {
             return (
-                <div className="my-link" key={i} onClick={ () => { trackAndNav(link.link, link.id, props.userId) } }>
+                <div style={ { color: props.defaultLinkColor, borderColor: props.defaultLinkColor } } className="my-link" key={i} onClick={ () => { trackAndNav(link.link, link.id, props.userId) } }>
                     <div className="link">
                         {link.linkText}
                     </div>
@@ -40,8 +40,7 @@ class MyLinks extends Component {
         };
     }
     componentWillMount() {
-        this.getLinks();
-        this.getPreferences();
+        this.getLinks(this.getPreferences());
     }
     getPreferences() {
         const preferences = Firebase.database().ref( 'users/' + this.state.userId + '/preferences/' );
@@ -54,13 +53,13 @@ class MyLinks extends Component {
                     linksHeaderImage: preferences.profileImageLink,
                     instagramId: preferences.instagramId,
                     instagramIdColor: preferences.instagramIdColor,
+                    defaultLinkColor: preferences.defaultLinkColor,
+                    bgColor: preferences.bgColor
                 });
-
-                document.body.style.backgroundColor = preferences.bgColor;
             }
         });
     }
-    getLinks() {
+    getLinks(callback) {
         const links = Firebase.database().ref( 'users/' + this.state.userId + '/links/' );
         let linklist;
 
@@ -81,27 +80,24 @@ class MyLinks extends Component {
                     links: linklist.filter( (link) => {
                         return (
                             ( link.startDate === "" || new Date(link.startDate) <= now ) &&
-                            ( link.endDate === "" || new Date(link.endDate) >= now )
+                            ( link.endDate === "" || new Date(link.endDate) >= now ) &&
+                            link.active
                         )
                     })
                 });
+
+                callback && callback();
             }
         });
     }
     render() {
-        if ( this.state.linksHeaderImage ) {
             return (
-                <div className="my-links" style={ { backgroundColor: this.state.bgColor } }>
-                    <img className="logo" src={this.state.linksHeaderImage} alt="What Great Grandma Ate logo." />
+                <div id="my-links" style={ { backgroundColor: this.state.bgColor } }>
+                    <img className="logo" src={this.state.linksHeaderImage} alt="" />
                     <h2 className="my-links-header" style={ { color: this.state.instagramIdColor } }>{this.state.instagramId}</h2>
-                    <Links links={this.state.links} userId={this.state.userId} />
+                    <Links links={this.state.links} userId={this.state.userId} defaultLinkColor={this.state.defaultLinkColor} />
                 </div>
             )
-        } else {
-            return (
-                <span></span>
-            )
-        }
     }
 }
 

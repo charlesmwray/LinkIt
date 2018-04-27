@@ -1,0 +1,18 @@
+.add-new-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-new-item .preview {
+    flex-grow: 1;
+}
+
+.add-new-item .form {
+    max-width: 300px;
+}
+
+@media (min-width: 480px) {
+    .add-new-item {
+        flex-direction: row
+    }
+}

@@ -1,0 +1,31 @@
+.header {
+    padding: 0 1rem;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header .title {
+    flex-grow: 1;
+}
+.header .login-button,
+.header .logout-button {
+    float: right;
+}
+.header .login-button {
+    margin: 1rem;
+}
+.header .avatar {
+    height: 36px;
+    width: 36px;
+    border-radius: .5rem;
+    background-size: contain;
+    top: 13px;
+    position: relative;
+}
+.header .buttons {
+    display: flex;
+    align-items: center;
+}
+.header .add-link {
+    margin: 10px;
+}

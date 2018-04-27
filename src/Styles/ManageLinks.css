@@ -1,0 +1,66 @@
+.link-wrapper {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.link-wrapper .link {
+    display: flex;
+    align-items: baseline;
+    margin: .5rem;
+    padding-bottom: .5rem;
+    background-color: #eeeeee;
+    opacity: .4;
+}
+
+.link-wrapper .link.active {
+    opacity: 1;
+}
+
+.cell {
+    margin: 0 .5rem;
+    padding: 0 .25rem;
+}
+
+.cell .label {
+    color: #757575;
+}
+
+.cell.title-section {
+    width: 50%;
+}
+
+.cell.title-section .title {
+    margin: .25rem 0;
+    font-size: 1.5rem;
+}
+
+.cell.title-section .subtitle {
+    margin: .25rem 0;
+    font-size: 1rem;
+}
+
+.cell.title-section .url {
+    margin: .25rem 0;
+    font-size: 1rem;
+    color: #64b5f6;
+}
+
+.cell.metadata-section {
+    width: 25%;
+}
+.cell.metadata-section .metadata {
+    margin: .25rem 0;
+}
+.cell.metadata-section .metadata.date {
+    color: #e53935;
+}
+.cell.metadata-section .metadata.active.date {
+    color: inherit;
+}
+
+
+.cell.action-section {
+    width: 25%;
+    text-align: right;
+}

@@ -17,6 +17,13 @@ class LinkRouter extends Component {
         this.getId();
     }
     getId() {
+        const setState = (id) => {
+            this.setState({
+                userId: id
+            });
+        }
+        const user = this.state.user;
+
         Firebase.database().ref('userMap').once('value', (snapshot) => {
             let map = snapshot.val();
             let keys = Object.keys(map);
@@ -26,12 +33,10 @@ class LinkRouter extends Component {
                 return item;
             });
 
-            let userMap = parsedMap.find( item =>  item.instagramId === this.state.user );
+            let userMap = parsedMap.find( item => item.instagramId === user );
             let userId = userMap.id;
 
-            this.setState({
-                userId: userId
-            });
+            setState(userId);
         });
     }
     render() {

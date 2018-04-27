@@ -1,0 +1,11 @@
+.prefs-preview {
+    border: 1px solid #222;
+    margin-top: 2rem;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.prefs-preview .avatar {
+    width: 120px;
+    height: 120px;
+}
